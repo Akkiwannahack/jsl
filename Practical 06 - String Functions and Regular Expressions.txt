@@ -1,0 +1,48 @@
+Practical 6: String Functions and Regular Expressions
+Aim: To use string functions and regular expressions for email validation, data extraction and text analysis.
+
+Theory: String methods process text. Regular expressions match patterns and can validate formats or extract matching data. This example uses a basic email-format check.
+
+Code — index.html:
+<!DOCTYPE html>
+<html>
+<head><title>Text Analysis</title></head>
+<body>
+  <h2>String and Regex Operations</h2>
+
+  <input id="email" placeholder="Email address">
+  <br><br>
+  <textarea id="text" placeholder="Enter text with numbers"></textarea>
+  <br>
+  <button id="analyze">Analyze</button>
+  <pre id="result"></pre>
+
+  <script>
+    document.getElementById("analyze").onclick = function () {
+      const email = document.getElementById("email").value.trim();
+      const text = document.getElementById("text").value.trim();
+
+      const validEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+      const words = text ? text.split(/\s+/).length : 0;
+      const numbers = text.match(/\d+(?:\.\d+)?/g) || [];
+      const vowels = text.match(/[aeiou]/gi) || [];
+
+      document.getElementById("result").textContent =
+        `Email: ${validEmail ? "Valid format" : "Invalid format"}\n` +
+        `Uppercase: ${text.toUpperCase()}\n` +
+        `Characters: ${text.length}\n` +
+        `Words: ${words}\nVowels: ${vowels.length}\n` +
+        `Numbers: ${numbers.join(", ") || "None"}`;
+    };
+  </script>
+</body>
+</html>
+
+Conclusion: String methods and regular expressions were used to validate email format and analyze text.
+
+How to run:
+1. Create a folder named Practical_06.
+2. Save the code as index.html and open it.
+3. Enter an email, such as student@example.com.
+4. Enter text, such as I bought 3 books for 150 rupees.
+5. Click Analyze to view the results.

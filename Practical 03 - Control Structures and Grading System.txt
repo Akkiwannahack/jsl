@@ -1,0 +1,61 @@
+Practical 3: Control Structures and Grading System
+Aim: To implement control structures and form validation using a grading system.
+
+Theory: Conditional statements select actions based on conditions. Loops repeat instructions. Form validation checks input before processing it.
+
+Code — index.html:
+<!DOCTYPE html>
+<html>
+<head><title>Grading System</title></head>
+<body>
+  <h2>Student Grading System</h2>
+
+  <form id="marksForm">
+    <input id="marks" placeholder="Marks: 75,80,90" required>
+    <button>Find Grade</button>
+  </form>
+
+  <p id="result"></p>
+
+  <script>
+    document.getElementById("marksForm").onsubmit = function (event) {
+      event.preventDefault();
+
+      const parts = document.getElementById("marks").value.split(",");
+      const marks = parts.map(Number);
+      const result = document.getElementById("result");
+
+      if (parts.some(part => part.trim() === "") ||
+          marks.some(mark => !Number.isFinite(mark) ||
+                             mark < 0 || mark > 100)) {
+        result.textContent = "Enter valid marks between 0 and 100.";
+        return;
+      }
+
+      let total = 0;
+      for (const mark of marks) total += mark;
+
+      const average = total / marks.length;
+      let grade;
+
+      if (average >= 90) grade = "A";
+      else if (average >= 75) grade = "B";
+      else if (average >= 60) grade = "C";
+      else if (average >= 40) grade = "D";
+      else grade = "F";
+
+      result.textContent =
+        `Average: ${average.toFixed(2)} | Grade: ${grade}`;
+    };
+  </script>
+</body>
+</html>
+
+Conclusion: A grading system was implemented using validation, a loop and conditional statements.
+
+How to run:
+1. Create a folder named Practical_03.
+2. Save the code as index.html and open it in a browser.
+3. Enter comma-separated marks, such as 75,80,90.
+4. Click Find Grade to view the average and grade.
+5. Try 110,50 to check validation.

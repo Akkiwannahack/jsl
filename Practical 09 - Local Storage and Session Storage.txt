@@ -1,0 +1,62 @@
+Practical 9: Local Storage and Session Storage
+Aim: To save a theme preference using localStorage and a session name using sessionStorage.
+
+Theory: localStorage retains data across browser sessions until cleared. sessionStorage retains data across reloads within the same tab’s session. Both store string values.
+
+Code — index.html:
+<!DOCTYPE html>
+<html>
+<head><title>Browser Storage</title></head>
+<body>
+  <h2>User Preferences</h2>
+
+  <select id="theme">
+    <option value="light">Light theme</option>
+    <option value="dark">Dark theme</option>
+  </select>
+
+  <input id="name" placeholder="Name for this session">
+  <button id="save">Save Name</button>
+  <p id="welcome"></p>
+
+  <script>
+    const theme = document.getElementById("theme");
+    const nameInput = document.getElementById("name");
+
+    function applyTheme() {
+      const dark = theme.value === "dark";
+      document.body.style.background = dark ? "#222" : "white";
+      document.body.style.color = dark ? "white" : "#222";
+    }
+
+    function showName() {
+      document.getElementById("welcome").textContent =
+        "Welcome, " + (sessionStorage.getItem("studentName") || "Guest");
+    }
+
+    theme.value = localStorage.getItem("studentTheme") || "light";
+    applyTheme();
+    showName();
+
+    theme.onchange = function () {
+      localStorage.setItem("studentTheme", theme.value);
+      applyTheme();
+    };
+
+    document.getElementById("save").onclick = function () {
+      sessionStorage.setItem("studentName", nameInput.value.trim());
+      showName();
+    };
+  </script>
+</body>
+</html>
+
+Conclusion: Persistent and session-based preferences were saved using browser storage.
+
+How to run:
+1. Create a folder named Practical_09 and save the code as index.html.
+2. Open the folder in VS Code with the Live Server extension installed.
+3. Right-click index.html and select Open with Live Server.
+4. Select a theme, enter a name and click Save Name.
+5. Reload the page: both values should remain.
+6. Close the tab, then open the same URL in a fresh tab: the theme remains, while the session name normally resets. Browser session restoration may restore session data.

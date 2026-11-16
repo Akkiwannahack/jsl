@@ -1,0 +1,61 @@
+Practical 4: Functions, Scope, Closures and Palindrome Checker
+Aim: To demonstrate function types, scope, closures and exception handling using a palindrome checker.
+
+Theory: Functions are reusable blocks of code. JavaScript supports function declarations, function expressions and arrow functions. A closure retains access to its enclosing scope. try...catch handles thrown errors.
+
+Code — index.html:
+<!DOCTYPE html>
+<html>
+<head><title>Palindrome Checker</title></head>
+<body>
+  <h2>Palindrome Checker</h2>
+  <input id="text" placeholder="Enter text">
+  <button id="check">Check</button>
+  <p id="result"></p>
+
+  <script>
+    // Function declaration and closure
+    function createCounter() {
+      let count = 0; // Local scope
+      return function () {
+        return ++count;
+      };
+    }
+
+    const nextCount = createCounter(); // Global script scope
+
+    // Arrow function
+    const clean = text => text.toLowerCase().replace(/[^a-z0-9]/g, "");
+
+    // Function expression
+    const isPalindrome = function (text) {
+      return text === text.split("").reverse().join("");
+    };
+
+    document.getElementById("check").onclick = function () {
+      const result = document.getElementById("result");
+
+      try {
+        const text = clean(document.getElementById("text").value);
+        if (!text) throw new Error("Enter letters or numbers.");
+
+        result.textContent =
+          `Check ${nextCount()}: ` +
+          (isPalindrome(text) ? "Palindrome" : "Not a palindrome");
+      } catch (error) {
+        result.textContent = error.message;
+      }
+    };
+  </script>
+</body>
+</html>
+
+Conclusion: Function types, scope, closures and error handling were demonstrated through palindrome checking.
+
+How to run:
+1. Create a folder named Practical_04.
+2. Save the code as index.html and open it.
+3. Enter madam and click Check.
+4. Enter hello to test a non-palindrome.
+5. Leave the input empty to test error handling.
+6. Repeat checks to observe the counter maintained by the closure.

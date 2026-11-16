@@ -1,0 +1,66 @@
+Practical 8: Gym Admission Form with Live Validation
+Aim: To access form fields and validate user input using JavaScript events.
+
+Theory: The input event fires when a user changes a field. The submit event handles form submission. Live validation provides immediate feedback about invalid values.
+
+Code — index.html:
+<!DOCTYPE html>
+<html>
+<head><title>Gym Admission</title></head>
+<body>
+  <h2>Gym Admission Form</h2>
+
+  <form id="gym" novalidate>
+    <input id="name" placeholder="Full name"><br><br>
+    <input id="age" type="number" placeholder="Age"><br><br>
+    <input id="email" type="email" placeholder="Email"><br><br>
+    <input id="phone" type="tel" placeholder="10-digit phone"><br><br>
+    <button>Submit</button>
+  </form>
+
+  <p id="message"></p>
+
+  <script>
+    const form = document.getElementById("gym");
+    const message = document.getElementById("message");
+    const value = id => document.getElementById(id).value.trim();
+
+    function validate() {
+      let error = "";
+
+      if (value("name").length < 3)
+        error = "Name must contain at least 3 characters.";
+      else if (!value("age") || !Number.isInteger(Number(value("age"))) ||
+               Number(value("age")) < 16 || Number(value("age")) > 80)
+        error = "Age must be a whole number from 16 to 80.";
+      else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value("email")))
+        error = "Enter a valid email.";
+      else if (!/^\d{10}$/.test(value("phone")))
+        error = "Phone must contain exactly 10 digits.";
+
+      message.textContent = error || "All fields are valid.";
+      message.style.color = error ? "red" : "green";
+      return error === "";
+    }
+
+    form.addEventListener("input", validate);
+
+    form.addEventListener("submit", function (event) {
+      event.preventDefault();
+      if (validate()) {
+        message.textContent = "Admission form accepted for this demo!";
+        form.reset();
+      }
+    });
+  </script>
+</body>
+</html>
+
+Conclusion: Form fields were validated using input and submit events.
+
+How to run:
+1. Create a folder named Practical_08.
+2. Save the code as index.html and open it.
+3. Enter your name, age, email and phone number.
+4. Observe the feedback while typing.
+5. Enter valid values and click Submit. This demonstration does not send data to a server.

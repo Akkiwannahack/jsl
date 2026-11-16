@@ -1,0 +1,96 @@
+Practical 12: Interactive Web App with JavaScript and jQuery
+Aim: To build an interactive study-task app using DOM updates, events, storage and AJAX.
+
+Theory: JavaScript and jQuery handle user events and update the DOM. Local storage preserves tasks, while AJAX loads data without reloading the page. This app updates immediately within the browser; it does not synchronize between users.
+
+Code — tasks.json:
+[
+  "Revise JavaScript functions",
+  "Practice DOM manipulation",
+  "Study AJAX and JSON"
+]
+
+Code — index.html:
+<!DOCTYPE html>
+<html>
+<head><title>Study Task App</title></head>
+<body>
+  <h2>Study Task App</h2>
+  <p id="clock"></p>
+
+  <form id="taskForm">
+    <input id="task" placeholder="Enter study task" required>
+    <button>Add</button>
+  </form>
+
+  <button id="load">Load Sample Tasks using AJAX</button>
+  <p id="status"></p>
+  <ul id="list"></ul>
+
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script>
+    let tasks = JSON.parse(localStorage.getItem("studyTasks") || "[]");
+
+    function render() {
+      $("#list").empty();
+
+      tasks.forEach((task, index) => {
+        const item = $("<li>");
+        $("<span>").text(task + " ").appendTo(item);
+        $("<button>").text("Delete").attr("data-index", index)
+          .appendTo(item);
+        $("#list").append(item);
+      });
+
+      localStorage.setItem("studyTasks", JSON.stringify(tasks));
+    }
+
+    $("#taskForm").on("submit", function (event) {
+      event.preventDefault();
+      const task = $("#task").val().trim();
+      if (!task) return;
+
+      tasks.push(task);
+      $("#task").val("");
+      render();
+    });
+
+    $("#list").on("click", "button", function () {
+      tasks.splice(Number($(this).attr("data-index")), 1);
+      render();
+    });
+
+    $("#load").on("click", function () {
+      $.getJSON("tasks.json")
+        .done(function (data) {
+          tasks = [...new Set([...tasks, ...data])];
+          render();
+          $("#status").text("Sample tasks loaded.");
+        })
+        .fail(function () {
+          $("#status").text("Could not load tasks.json.");
+        });
+    });
+
+    function updateClock() {
+      $("#clock").text(new Date().toLocaleTimeString());
+    }
+
+    updateClock();
+    setInterval(updateClock, 1000);
+    render();
+  </script>
+</body>
+</html>
+
+Conclusion: An interactive task app was developed using JavaScript, jQuery, DOM events, local storage and AJAX.
+
+How to run:
+1. Create a folder named Practical_12.
+2. Save index.html and tasks.json inside it.
+3. Open the folder in VS Code with Live Server installed.
+4. Right-click index.html → Open with Live Server.
+5. Keep internet access enabled to load jQuery.
+6. Add and delete tasks.
+7. Click Load Sample Tasks using AJAX to load the JSON data.
+8. Reload the page to confirm that tasks remain saved.

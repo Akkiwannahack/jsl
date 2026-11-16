@@ -1,0 +1,75 @@
+Practical 10: JSON Loading with Fetch and jQuery
+Aim: To load JSON using fetch() and jQuery $.getJSON() and display it in a table.
+
+Theory: JSON is a text format for structured data. fetch() and $.getJSON() retrieve data asynchronously, allowing webpage content to update without a full reload.
+
+Code — students.json:
+[
+  { "id": 1, "name": "Akshat", "marks": 85 },
+  { "id": 2, "name": "Ayush", "marks": 78 },
+  { "id": 3, "name": "Himesh", "marks": 92 }
+]
+
+Code — index.html:
+<!DOCTYPE html>
+<html>
+<head><title>JSON Student Table</title></head>
+<body>
+  <h2>Student Records</h2>
+  <button id="fetchButton">Load using Fetch</button>
+  <button id="jqueryButton">Load using jQuery</button>
+  <p id="status"></p>
+
+  <table border="1">
+    <thead>
+      <tr><th>ID</th><th>Name</th><th>Marks</th></tr>
+    </thead>
+    <tbody id="rows"></tbody>
+  </table>
+
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script>
+    const status = document.getElementById("status");
+
+    function display(students) {
+      const rows = document.getElementById("rows");
+      rows.textContent = "";
+
+      students.forEach(student => {
+        const row = rows.insertRow();
+        [student.id, student.name, student.marks].forEach(value => {
+          row.insertCell().textContent = value;
+        });
+      });
+
+      status.textContent = "Data loaded successfully.";
+    }
+
+    document.getElementById("fetchButton").onclick = async function () {
+      try {
+        const response = await fetch("students.json");
+        if (!response.ok) throw new Error("Unable to load JSON.");
+        display(await response.json());
+      } catch (error) {
+        status.textContent = error.message;
+      }
+    };
+
+    document.getElementById("jqueryButton").onclick = function () {
+      $.getJSON("students.json")
+        .done(display)
+        .fail(() => status.textContent = "Unable to load JSON.");
+    };
+  </script>
+</body>
+</html>
+
+Conclusion: JSON data was loaded asynchronously using Fetch and jQuery and displayed in a dynamic table.
+
+How to run:
+1. Create a folder named Practical_10.
+2. Save index.html and students.json inside it.
+3. Open the folder in VS Code with Live Server installed.
+4. Right-click index.html → Open with Live Server. Do not open it by double-clicking.
+5. Keep internet access enabled to load jQuery.
+6. Click each button to test both loading methods.

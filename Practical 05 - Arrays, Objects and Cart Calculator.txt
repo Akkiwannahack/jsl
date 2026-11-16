@@ -1,0 +1,64 @@
+Practical 5: Arrays, Objects and Cart Calculator
+Aim: To apply array methods and object handling in a cart calculator with discount logic.
+
+Theory: Arrays store collections, and objects store related properties. Methods such as push(), map() and reduce() add, transform and combine array data.
+
+Code — index.html:
+<!DOCTYPE html>
+<html>
+<head><title>Shopping Cart</title></head>
+<body>
+  <h2>Shopping Cart</h2>
+
+  <form id="cartForm">
+    <input id="name" placeholder="Item name" required>
+    <input id="price" type="number" min="0.01" step="0.01"
+           placeholder="Price" required>
+    <input id="quantity" type="number" min="1" step="1"
+           placeholder="Quantity" required>
+    <button>Add Item</button>
+  </form>
+
+  <pre id="items"></pre>
+  <p id="total"></p>
+
+  <script>
+    const cart = [];
+
+    document.getElementById("cartForm").onsubmit = function (event) {
+      event.preventDefault();
+
+      cart.push({
+        name: document.getElementById("name").value,
+        price: Number(document.getElementById("price").value),
+        quantity: Number(document.getElementById("quantity").value)
+      });
+
+      document.getElementById("items").textContent = cart.map(item =>
+        `${item.name}: ${item.quantity} × ₹${item.price}`
+      ).join("\n");
+
+      const subtotal = cart.reduce((sum, item) =>
+        sum + item.price * item.quantity, 0);
+
+      const discount = subtotal >= 1000 ? subtotal * 0.10 : 0;
+
+      document.getElementById("total").textContent =
+        `Subtotal: ₹${subtotal.toFixed(2)} | ` +
+        `Discount: ₹${discount.toFixed(2)} | ` +
+        `Pay: ₹${(subtotal - discount).toFixed(2)}`;
+
+      this.reset();
+    };
+  </script>
+</body>
+</html>
+
+Conclusion: Arrays and objects were used to manage cart items and calculate a discounted total.
+
+How to run:
+1. Create a folder named Practical_05.
+2. Save the code as index.html and open it.
+3. Enter an item name, price and quantity.
+4. Click Add Item and add more items as needed.
+5. A subtotal of ₹1,000 or more receives a 10% discount.

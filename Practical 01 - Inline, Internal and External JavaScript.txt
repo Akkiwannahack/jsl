@@ -1,0 +1,49 @@
+Practical 1: Inline, Internal and External JavaScript
+Aim: To demonstrate inline, internal and external JavaScript, console methods, and a welcome webpage.
+
+Theory: JavaScript adds interactivity to webpages. Inline JavaScript is written in HTML attributes, internal JavaScript inside <script>, and external JavaScript in a separate .js file. Console methods help display and debug information.
+
+Code — index.html:
+<!DOCTYPE html>
+<html>
+<head><title>JavaScript Types</title></head>
+<body>
+  <h2>User Information</h2>
+  <p id="info"></p>
+
+  <!-- Inline JavaScript -->
+  <button onclick="alert('Welcome, Akshat!')">
+    Show Welcome
+  </button>
+
+  <!-- Internal JavaScript -->
+  <script>
+    const user = { name: "Akshat", course: "B.Tech" };
+
+    document.getElementById("info").textContent =
+      user.name + " - " + user.course;
+
+    console.log("User information loaded");
+    console.table(user);
+    console.warn("This is a sample warning");
+    console.error("This is a sample error");
+  </script>
+
+  <!-- External JavaScript -->
+  <script src="script.js"></script>
+</body>
+</html>
+
+Code — script.js:
+const message = document.createElement("p");
+message.textContent = "Welcome to JavaScript practicals!";
+document.body.appendChild(message);
+
+Conclusion: Inline, internal and external JavaScript were demonstrated along with console methods.
+
+How to run:
+1. Create a folder named Practical_01.
+2. Save the files as index.html and script.js inside it.
+3. Double-click index.html to open it in a browser.
+4. Click Show Welcome.
+5. Press F12 → Console to view the console messages.

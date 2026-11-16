@@ -1,0 +1,82 @@
+Practical 11: Timers, ES6 Modules and Countdown
+Aim: To use setTimeout(), setInterval() and ES6 modules to build a responsive countdown.
+
+Theory: setTimeout() runs a function after a delay, while setInterval() runs it repeatedly. ES6 modules share code using export and import. A countdown can calculate remaining time from a target timestamp.
+
+Code — timer.js:
+export function formatTime(seconds) {
+  const minutes = Math.floor(seconds / 60);
+  const remaining = seconds % 60;
+  return `${minutes}:${String(remaining).padStart(2, "0")}`;
+}
+
+Code — index.html:
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Countdown Timer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body { font-family: Arial; text-align: center; padding: 20px; }
+    main { max-width: 400px; margin: auto; }
+    input, button { padding: 10px; max-width: 100%; box-sizing: border-box; }
+    #display { font-size: 3rem; }
+  </style>
+</head>
+<body>
+  <main>
+    <h2>Countdown Timer</h2>
+    <form id="timerForm">
+      <input id="seconds" type="number" min="1" max="86400"
+             step="1" placeholder="Seconds" required>
+      <button>Start</button>
+    </form>
+    <p id="display">0:00</p>
+    <p id="message"></p>
+  </main>
+
+  <script type="module">
+    import { formatTime } from "./timer.js";
+
+    let interval;
+    let timeout;
+    const display = document.getElementById("display");
+    const message = document.getElementById("message");
+
+    document.getElementById("timerForm").onsubmit = function (event) {
+      event.preventDefault();
+      clearInterval(interval);
+      clearTimeout(timeout);
+
+      const seconds = Number(document.getElementById("seconds").value);
+      const end = Date.now() + seconds * 1000;
+      message.textContent = "";
+
+      function update() {
+        const left = Math.max(0, Math.ceil((end - Date.now()) / 1000));
+        display.textContent = formatTime(left);
+      }
+
+      update();
+      interval = setInterval(update, 200);
+
+      timeout = setTimeout(() => {
+        clearInterval(interval);
+        display.textContent = "0:00";
+        message.textContent = "Time is up!";
+      }, seconds * 1000);
+    };
+  </script>
+</body>
+</html>
+
+Conclusion: A responsive countdown was created using timers and reusable ES6 module code.
+
+How to run:
+1. Create a folder named Practical_11.
+2. Save index.html and timer.js inside it.
+3. Open the folder in VS Code with Live Server installed.
+4. Right-click index.html → Open with Live Server. Modules require an HTTP server.
+5. Enter 10 and click Start.
+6. Observe the countdown and completion message.
+7. Resize the browser window to check the layout.
