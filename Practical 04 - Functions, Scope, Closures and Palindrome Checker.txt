@@ -6,47 +6,41 @@ Theory: Functions are reusable blocks of code. JavaScript supports function decl
 Code — index.html:
 <!DOCTYPE html>
 <html>
-<head><title>Palindrome Checker</title></head>
 <body>
-  <h2>Palindrome Checker</h2>
-  <input id="text" placeholder="Enter text">
-  <button id="check">Check</button>
-  <p id="result"></p>
+<input id="word" placeholder="Enter word">
+<button onclick="check()">Check</button>
+<p id="result"></p>
 
-  <script>
-    // Function declaration and closure
-    function createCounter() {
-      let count = 0; // Local scope
-      return function () {
-        return ++count;
-      };
-    }
+<script>
+// Function declaration
+function check() {
+  try {
+    let s = document.getElementById("word").value.toLowerCase();
+    if (!s) throw "Enter a word";
 
-    const nextCount = createCounter(); // Global script scope
+    let rev = s.split("").reverse().join("");
+    document.getElementById("result").innerHTML =
+      s === rev ? "Palindrome" : "Not Palindrome";
+  }
+  catch(e) {
+    document.getElementById("result").innerHTML = e;
+  }
+}
 
-    // Arrow function
-    const clean = text => text.toLowerCase().replace(/[^a-z0-9]/g, "");
+// Function expression
+let add = function(a,b) { return a+b; };
 
-    // Function expression
-    const isPalindrome = function (text) {
-      return text === text.split("").reverse().join("");
-    };
+// Arrow function
+let square = n => n*n;
 
-    document.getElementById("check").onclick = function () {
-      const result = document.getElementById("result");
-
-      try {
-        const text = clean(document.getElementById("text").value);
-        if (!text) throw new Error("Enter letters or numbers.");
-
-        result.textContent =
-          `Check ${nextCount()}: ` +
-          (isPalindrome(text) ? "Palindrome" : "Not a palindrome");
-      } catch (error) {
-        result.textContent = error.message;
-      }
-    };
-  </script>
+// Closure
+function counter() {
+  let count = 0;
+  return () => ++count;
+}
+let c = counter();
+console.log(c(), c());
+</script>
 </body>
 </html>
 
